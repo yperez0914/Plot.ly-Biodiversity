@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\..\\Viz_Dashboards\\15-Interactive-Visualizations-and-Dashboards\\1\\Activities"
+		},
+		{
+			"path": "..\\..\\Viz_Dashboards\\15-Interactive-Visualizations-and-Dashboards\\2\\Activities"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Plot.ly-Biodiversity"
+	}
+}
