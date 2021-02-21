@@ -18,50 +18,50 @@ function buildMetadata(sample){
 
 function buildCharts (sample){
     d3.json("static/js/samples.json").then((data) => {
-    // Use sample_values as the values for the bar chart.
-    // Use otu_ids as the labels for the bar chart.
-    // Use otu_labels as the hovertext for the chart.
-    var sample_values = data.samples.sample_values;
-    console.log(`${sample_values}`);
-    var sample_slice =sample_values.slice(0,10);
-    var otu_ids = data.samples.otu_ids;
-    var otu_slice = otu_ids.slice(0,10);
-    var otu_labels = data.samples.otu_labels; 
-    console.log(sample_slice);
-    console.log(sample_values);
+        var samples = data.samples;
+        var barData = samples.filter(i => i.id == sample)[0];
+        var sampValues = Object.values(barData.sample_values);
+        var otuIds = Object.values(barData.otu_ids);
+        var otuLabels = Object.values(barData.otu_labels);
     // Chart 1
-    var layout = {
-        title: "Bacterial Samples"
-        };
-        // HINT: You will need to use slice() to grab the top 10 sample_values,
-        // otu_ids, and labels (10 each).
-        var bac = [{
-        // x: sample_values.slice(0, 11),
-        // y: otu_ids.slice(0, 11),
-        x: sample_slice,
-        y: otu_slice,
+
+    var data = [{
+        x: sampValues.slice(0, 11).reverse(),
+        y: otuIds.map(d => `ID: ${d}`).slice(0,11).reverse(),
         type: "bar",
-        orientation: 'h'
-        }];
-        Plotly.newPlot("bar", bac, layout, {responsive: true});
-    //Chart 2
-        var trace = [{
-        x: otu_slice,
-        y: sample_slice,
-        text: otu_labels,
+        text: otuLabels,
+        orientation: 'h' 
+      }];
+      var layout = {
+        title: 'Top 10 OTUs'
+      };
+      Plotly.newPlot("bar", data, layout);
+  
+    // Chart 2
+    var data2 = [{
+        x: otuIds,
+        y: sampValues,
+        text: otuLabels,
         mode: 'markers',
         marker: {
-            size:sample_values,
-            color: otu_ids
+            size:sampValues,
+            color: otuIds
         }
-        }];
-        var layout2 = {
+    }];
+    var layout2 = {
         title: "Bacterial Bubble Chart",
-        showlegend: false
-        };
-        Plotly.newPlot("bubble", trace, layout2, {responsive: true});
+        showlegend: false,
+        xaxis:{
+            title: {
+                text:"OTU ID",
+            }
+        }
+        
+    };
+    Plotly.newPlot("bubble", data2, layout2);
+   
     })
-    }
+};
 
 
 
@@ -92,7 +92,7 @@ function optionChanged(sample) {
     
     var dropdown = d3.select("#onChange");
     console.log(sample);
-    dropdown.on("change", buildMetadata(sample)).on("change", buildCharts(value));
+    dropdown.on("change", buildMetadata(sample)).on("change", buildCharts(sample));
 }
 
 init();
