@@ -67,7 +67,6 @@ function buildCharts (sample){
 
 function init(){
     d3.json("static/js/samples.json").then((data) => {
-        // Create a horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
         
             var id_names = data.names;
             var dropdown = d3.select("#selDataset");
